@@ -3,7 +3,7 @@
 namespace ReverseGeocode\ReverseGeocodeMicroservice\Consumers;
 
 use ReverseGeocode\ReverseGeocodeMicroservice\Clients\MessageConsumerClient;
-use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\ReverseGeocodeMessageDto;
+use ReverseGeocode\ReverseGeocodeMicroservice\Factories\ReverseGeocodeMessageDtoFactory;
 
 readonly class ReverseGeocodeFileConsumer
 {
@@ -13,11 +13,6 @@ readonly class ReverseGeocodeFileConsumer
 
     public function getMessages(): array
     {
-        return array_map(function ($message) {
-            $messageAttributes = $message['MessageAttributes'];
-            return new ReverseGeocodeMessageDto(
-                $messageAttributes['Key']['StringValue'], $messageAttributes['SenderEmail']['StringValue']
-            );
-        }, $this->messageReceiverClient->getMessages());
+        return ReverseGeocodeMessageDtoFactory::byConsumerMessages($this->messageReceiverClient->getMessages());
     }
 }

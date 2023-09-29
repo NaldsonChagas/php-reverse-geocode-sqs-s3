@@ -6,7 +6,7 @@ use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\CoordinatesDto;
 
 class CoordinatesDtoFactory
 {
-    public static function getCoordinatesDtoByFileContent(array $fileContent): array
+    public static function byFileContent(array $fileContent): array
     {
         if (empty($fileContent)) return [];
         if (str_starts_with($fileContent[0], 'id')) array_shift($fileContent);
