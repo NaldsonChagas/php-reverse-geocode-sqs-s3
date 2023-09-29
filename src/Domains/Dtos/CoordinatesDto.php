@@ -4,12 +4,14 @@ namespace ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos;
 
 readonly class CoordinatesDto
 {
-    public readonly string $latitude;
-    public readonly string $longitute;
+    public string $id;
+    public string $latitude;
+    public string $longitude;
 
-    public function __construct(string $latitude, string $longitude)
+    public function __construct(string $id, string $latitude, string $longitude)
     {
+        $this->id = $id;
         $this->latitude = $latitude;
-        $this->longitute = $longitude;
+        $this->longitude = $longitude;
     }
 }

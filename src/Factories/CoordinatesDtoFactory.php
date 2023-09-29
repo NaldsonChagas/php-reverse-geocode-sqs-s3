@@ -13,9 +13,10 @@ class CoordinatesDtoFactory
 
         return array_map(function ($line) {
             $lineContent = explode(',', $line);
+            $id = $lineContent[0];
             $latitude = $lineContent[1];
             $longitude = $lineContent[2];
-            return new CoordinatesDto($latitude, $longitude);
+            return new CoordinatesDto($id, $latitude, $longitude);
         }, $fileContent);
     }
 }
