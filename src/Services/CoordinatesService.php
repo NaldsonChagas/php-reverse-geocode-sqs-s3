@@ -2,18 +2,19 @@
 
 namespace ReverseGeocode\ReverseGeocodeMicroservice\Services;
 
-use ReverseGeocode\ReverseGeocodeMicroservice\Clients\ProjectS3Client;
 use ReverseGeocode\ReverseGeocodeMicroservice\Clients\StorageClient;
-use ReverseGeocode\ReverseGeocodeMicroservice\Factories\CoordinatesDtoFactory;
+use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\CoordinatesByEmailDto;
+use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\ReverseGeocodeMessageDto;
+use ReverseGeocode\ReverseGeocodeMicroservice\Factories\CoordinatesByEmailDtoFactory;
 
 class CoordinatesService
 {
-    public function getCoordinatesByMessages(array $messages, StorageClient $storageClient): array
-    {
+    public function getCoordinatesByEmail(
+        ReverseGeocodeMessageDto $message,
+        StorageClient $storageClient
+    ): CoordinatesByEmailDto {
         $storageService = new StorageService($storageClient);
-        return array_map(function($message) use ($storageService) {
-            $fileContent = $storageService->getFileContent($message->key);
-            return CoordinatesDtoFactory::byFileContent($fileContent);
-        }, $messages);
+        $fileContent = $storageService->getFileContent($message->key);
+        return CoordinatesByEmailDtoFactory::byFileContent($message->email, $fileContent);
     }
 }

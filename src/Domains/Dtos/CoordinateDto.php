@@ -2,7 +2,7 @@
 
 namespace ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos;
 
-readonly class CoordinatesDto
+readonly class CoordinateDto
 {
     public string $id;
     public string $latitude;
