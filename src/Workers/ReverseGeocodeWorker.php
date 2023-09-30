@@ -24,8 +24,9 @@ class ReverseGeocodeWorker
         foreach ($messages as $message) {
             $coordinatesByEmailDto = (new CoordinatesService())->getCoordinatesByEmail($message, new ProjectS3Client());
             $addressesByEmailDto = $reverseGeocodeService->getAddresses($coordinatesByEmailDto);
-            (new FileService())->toCSV($reverseGeocodeService->addressesToCSVFormat($addressesByEmailDto));
-            Logger::log('CSV created. Starting send to user');
+            $addressToCsvFormat = $reverseGeocodeService->addressesToCSVFormat($addressesByEmailDto);
+            $addressCsvFormat = (new FileService())->toCSV($addressToCsvFormat);
+            $reverseGeocodeService->sendAddresses($coordinatesByEmailDto->email, $addressCsvFormat);
         }
     }
 
