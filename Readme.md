@@ -1,4 +1,4 @@
-![Diagram](https://lucid.app/publicSegments/view/b03a1c19-47b7-4caa-8e15-3d9ad095e87b/image.png)
+![Diagram]([https://lucid.app/publicSegments/view/b03a1c19-47b7-4caa-8e15-3d9ad095e87b/image.png](https://i.ibb.co/QfDZMwD/image.png))
 
 **Reverse Geocode**
 
