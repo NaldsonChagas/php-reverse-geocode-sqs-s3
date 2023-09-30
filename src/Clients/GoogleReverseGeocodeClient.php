@@ -16,10 +16,9 @@ readonly class GoogleReverseGeocodeClient implements ReverseGeocodeClient
 
     function getAddress(string $latitude, string $longitude)
     {
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$this->googleMapsKey";
+        $url = $_ENV['GOOGLE_MAPS_API_URL']."$latitude,$longitude&key=$this->googleMapsKey";
         $response = $this->client->get($url);
         $body = json_decode($response['body'], true);
-
         return $body['results'][0]['formatted_address'];
     }
 }

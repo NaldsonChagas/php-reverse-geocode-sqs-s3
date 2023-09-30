@@ -5,11 +5,11 @@ namespace ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos;
 readonly class AddressByEmailDto
 {
     public string $email;
-    public array $address;
+    public array $addresses;
 
-    public function __construct(string $email, array $address)
+    public function __construct(string $email, array $addresses)
     {
         $this->email = $email;
-        $this->address = $address;
+        $this->addresses = $addresses;
     }
 }

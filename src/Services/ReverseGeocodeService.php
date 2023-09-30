@@ -21,4 +21,17 @@ readonly class ReverseGeocodeService
 
         return new AddressByEmailDto($coordinatesByEmailDto->email, $addresses);
     }
+
+    public function addressesToCSVFormat(AddressByEmailDto $addressByEmailDto): array
+    {
+        $header = ['id', 'address'];
+
+        $data = [$header];
+
+        foreach ($addressByEmailDto->addresses as $address) {
+            $data[] = [$address->id, $address->address];
+        }
+
+        return $data;
+    }
 }

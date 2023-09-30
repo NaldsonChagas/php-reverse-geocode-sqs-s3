@@ -14,17 +14,19 @@ readonly class HttpClient
         $this->client = new Client();
     }
 
-    /**
-     * @throws GuzzleException
-     */
     public function get(string $url): array
     {
-        $response = $this->client->request('GET', $url);
+        try {
+            $response = $this->client->request('GET', $url);
 
-        return [
-            'body' => $response->getBody()->getContents(),
-            'headers' => $response->getHeaders(),
-            'statusCode' => $response->getStatusCode(),
-        ];
+            return [
+                'body' => $response->getBody()->getContents(),
+                'headers' => $response->getHeaders(),
+                'statusCode' => $response->getStatusCode(),
+            ];
+        } catch (GuzzleException $e) {
+            error_log($e->getMessage());
+        }
+        return [];
     }
 }
