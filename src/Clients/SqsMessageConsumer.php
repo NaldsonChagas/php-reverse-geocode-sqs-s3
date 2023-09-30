@@ -3,11 +3,13 @@
 namespace ReverseGeocode\ReverseGeocodeMicroservice\Clients;
 
 use Aws\Exception\AwsException;
+use Aws\Result;
 use Aws\Sqs\SqsClient;
+use ReverseGeocode\ReverseGeocodeMicroservice\Logger\Logger;
 
-class SqsMessageConsumer implements MessageConsumerClient
+readonly class SqsMessageConsumer implements MessageConsumerClient
 {
-    private readonly SqsClient $sqsClient;
+    private SqsClient $sqsClient;
 
     public function __construct()
     {
@@ -26,20 +28,39 @@ class SqsMessageConsumer implements MessageConsumerClient
         try {
             $result = $this->sqsClient->receiveMessage(array(
                 'AttributeNames' => ['SentTimestamp'],
-                'MaxNumberOfMessages' => 1,
+                'MaxNumberOfMessages' => 10,
                 'MessageAttributeNames' => ['All'],
                 'QueueUrl' => $_ENV['SQS_GEOCODE_AVAILABLE_FILES_URL'],
                 'WaitTimeSeconds' => 0,
             ));
 
             if (empty($result->get('Messages'))) {
+                Logger::log('0 message found');
                 return [];
             }
 
-            return $result->get('Messages');
+            Logger::log('New message');
+            $messages = $result->get('Messages');
+
+            $this->removeReceivedMessagesFromQueue($result);
+
+            return $messages;
         } catch (AwsException $e) {
             error_log($e->getMessage());
             return [];
         }
+    }
+
+    public function removeReceivedMessagesFromQueue(Result $result): void
+    {
+        Logger::log('Removing received messages from queue');
+        $messages = $result->get('Messages');
+        foreach ($messages as $message) {
+            $this->sqsClient->deleteMessage([
+                'QueueUrl' => $_ENV['SQS_GEOCODE_AVAILABLE_FILES_URL'],
+                'ReceiptHandle' => $message['ReceiptHandle']
+            ]);
+        }
+        Logger::log('Removed received messages from queue');
     }
 }
