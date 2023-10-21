@@ -10,7 +10,7 @@ use ReverseGeocode\ReverseGeocodeMicroservice\Logger\Logger;
 use ReverseGeocode\ReverseGeocodeMicroservice\Services\FileService;
 use ReverseGeocode\ReverseGeocodeMicroservice\Services\ReverseGeocodeFileService;
 use ReverseGeocode\ReverseGeocodeMicroservice\Services\CoordinatesService;
-use ReverseGeocode\ReverseGeocodeMicroservice\Services\ReverseGeocodeService;
+use ReverseGeocode\ReverseGeocodeMicroservice\Services\AddressGeocodeService;
 
 class ReverseGeocodeWorker
 {
@@ -19,7 +19,7 @@ class ReverseGeocodeWorker
         $reverseFileConsumer = new ReverseGeocodeFileConsumer(new SqsMessageConsumer());
         $messages = (new ReverseGeocodeFileService())->getMessages($reverseFileConsumer);
 
-        $reverseGeocodeService = new ReverseGeocodeService(new GoogleReverseGeocodeClient());
+        $reverseGeocodeService = new AddressGeocodeService(new GoogleReverseGeocodeClient());
 
         foreach ($messages as $message) {
             $coordinatesByEmailDto = (new CoordinatesService())->getCoordinatesByEmail($message, new ProjectS3Client());

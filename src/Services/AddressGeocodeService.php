@@ -9,7 +9,7 @@ use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\AddressDto;
 use ReverseGeocode\ReverseGeocodeMicroservice\Domains\Dtos\CoordinatesByEmailDto;
 use ReverseGeocode\ReverseGeocodeMicroservice\Logger\Logger;
 
-readonly class ReverseGeocodeService
+readonly class AddressGeocodeService
 {
     private HttpClient $httpClient;
     

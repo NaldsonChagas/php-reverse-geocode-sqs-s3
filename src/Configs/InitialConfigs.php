@@ -2,18 +2,21 @@
 
 namespace ReverseGeocode\ReverseGeocodeMicroservice\Configs;
 
-use Dotenv\Dotenv;
+use ReverseGeocode\ReverseGeocodeMicroservice\Factories\ConfigsFactory;
 
-class InitialConfigs
+readonly class InitialConfigs
 {
-    public function config(): void
+    private array $configs;
+
+    public function __construct()
     {
-        $this->configDotEnv();
+        $this->configs = ConfigsFactory::getConfigs();
     }
 
-    private function configDotEnv(): void
+    public function config(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-        $dotenv->safeLoad();
+        foreach ($this->configs as $config) {
+            $config->config();
+        }
     }
 }
